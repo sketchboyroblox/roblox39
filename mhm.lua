@@ -251,12 +251,12 @@ local function queueScript()
 wait(2)
 print("Auto-restarting script...")
 local success = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/sketchboyroblox/roblox22/main/plan.lua"))()
+    loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
 end)
 if not success then
     wait(3)
     pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/sketchboyroblox/roblox22/main/plan.lua"))()
+        loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
     end)
 end
 ]])
@@ -269,7 +269,7 @@ end
         if game.PlaceId then
             pcall(function()
                 print("Backup restart method activated")
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/sketchboyroblox/roblox22/main/plan.lua"))()
+                loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
             end)
         end
     end)
@@ -449,48 +449,17 @@ local function stopFollowing()
     end
 end
 
-local function getTopThreePlayers()
-    local players = {}
-    for _, p in pairs(Players:GetPlayers()) do
-        if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
-            table.insert(players, p)
-        end
-    end
-    
-    local selectedPlayers = {}
-    for i = 1, math.min(3, #players) do
-        if #players > 0 then
-            local randomIndex = math.random(1, #players)
-            table.insert(selectedPlayers, players[randomIndex])
-            table.remove(players, randomIndex)
-        end
-    end
-    
-    return selectedPlayers
-end
-
 local function processMultipleUsers()
-    local targetPlayers = getTopThreePlayers()
-    if #targetPlayers == 0 then
-        wait(0.5)
-        return false
-    end
+    print("Sending messages to chat...")
     
-    print("Processing " .. #targetPlayers .. " users simultaneously")
-    
-    for _, targetPlayer in ipairs(targetPlayers) do
-        spawn(function()
-            local selectedMessages = getRandomMessages()
-            for i, message in ipairs(selectedMessages) do
-                if not isRunning then break end
-                local sent = sendMessage(message)
-                if sent then
-                    print("Sent message: " .. message)
-                end
-                wait(math.random(0.3, 0.6))
-            end
-        end)
-        wait(0.05)
+    local selectedMessages = getRandomMessages()
+    for i, message in ipairs(selectedMessages) do
+        if not isRunning then break end
+        local sent = sendMessage(message)
+        if sent then
+            print("Sent message: " .. message)
+        end
+        wait(math.random(0.5, 1.2))
     end
     
     wait(2)
