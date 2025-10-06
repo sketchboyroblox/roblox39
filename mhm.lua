@@ -29,7 +29,7 @@ local function initializeMessageVariations()
         "ageplay and cnc in chat/call ;3 /mhm",
         "get active /mhm",
         "add shame18 if you want $$",
-        "hi shame18 for promo like this",
+        "hi shame18 for promo like this"
         "add shame18",
         "BRO WHAT IS SHE DOING ON CAM? ☠️ /mhm",
         "SHES AGEPLAYING IN VC /mhm",
@@ -169,6 +169,7 @@ local queueteleport = queue_on_teleport or (syn and syn.queue_on_teleport) or (f
 local function queueScript()
     pcall(function()
         if queueteleport and type(queueteleport) == "function" then
+            -- Store the entire script code to reload after teleport
             queueteleport([[
 wait(3)
 print("Auto-restarting script after teleport...")
@@ -184,28 +185,40 @@ pcall(function()
     StarterGui:SetCore("TopbarEnabled", false)
 end)
 
--- Load and run the main script
+-- Try to load the script from your URL (update this to your actual script URL)
+local scriptUrl = "YOUR_SCRIPT_URL_HERE"  -- Replace with actual URL if hosted
 local attempts = 0
-while attempts < 3 do
+local loaded = false
+
+while attempts < 5 and not loaded do
+    attempts = attempts + 1
+    print("Attempting to load script (attempt " .. attempts .. "/5)...")
+    
     local success = pcall(function()
-        loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
+        loadstring(game:HttpGet(scriptUrl))()
     end)
+    
     if success then
-        print("Script loaded successfully")
+        print("Script loaded successfully on attempt " .. attempts)
+        loaded = true
         break
     else
-        attempts = attempts + 1
-        if attempts < 3 then
-            wait(2)
-        else
-            print("Failed to load script after 3 attempts")
+        print("Failed to load script on attempt " .. attempts)
+        if attempts < 5 then
+            wait(3)
         end
     end
+end
+
+if not loaded then
+    warn("Failed to load script after 5 attempts - manual restart required")
+    print("Press R to manually restart the script")
 end
 ]])
             print("Script queued for auto-restart on teleport")
         else
-            print("WARNING: queue_on_teleport not available - using alternative method")
+            print("WARNING: queue_on_teleport not available")
+            print("Script will need manual restart after server hop")
         end
     end)
 end
@@ -707,4 +720,3 @@ local function initialize()
 end
 
 initialize()
-
