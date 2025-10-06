@@ -20,106 +20,8 @@ local pingOptimized = false
 local messageVariations = {}
 local autoStartEnabled = true
 
-local function generateAdvancedMessageVariations(baseMessage)
-    local variations = {}
-    
-    local unicodeSubstitutions = {
-        ["a"] = {"а", "α", "ᴀ", "ā", "ă"},
-        ["e"] = {"е", "ε", "ē", "ė", "ę"},
-        ["o"] = {"о", "ο", "ō", "ő", "ø"},
-        ["i"] = {"і", "ι", "ī", "į", "ï"},
-        ["u"] = {"υ", "ū", "ü", "ų"},
-        ["c"] = {"с", "ć", "ç"},
-        ["p"] = {"р", "þ"},
-        ["x"] = {"х", "×"},
-        ["y"] = {"у", "ý", "ÿ"},
-        ["n"] = {"ո", "ñ"},
-        ["h"] = {"һ", "ħ"},
-        ["s"] = {"ѕ", "ş"},
-        ["t"] = {"τ", "ţ"},
-        ["l"] = {"ӏ", "ł"},
-        ["m"] = {"м", "ṃ"},
-        ["g"] = {"ց", "ğ"},
-        ["b"] = {"Ь", "ḃ"},
-        ["d"] = {"ԁ", "đ"},
-        ["w"] = {"ԝ", "ẁ"},
-        ["v"] = {"ν", "ṿ"}
-    }
-    
-    -- Use UTF-8 escape sequences instead of string.char for high Unicode values
-    local invisibleChars = {
-        "​",  -- Zero-width space
-        "‌",  -- Zero-width non-joiner
-        "‍",  -- Zero-width joiner
-        "﻿"   -- Zero-width no-break space
-    }
-    
-    local spacingTechniques = {
-        function(msg) return msg:gsub(" ", " . ") end,
-        function(msg) return msg:gsub(" ", "  ") end,
-        function(msg) return msg:gsub(" ", " - ") end,
-        function(msg) return msg:gsub(" ", " ~ ") end,
-        function(msg) return msg:gsub(" ", " · ") end,
-        function(msg) return msg:gsub("(%w)(%w)", "%1 %2", 1) end
-    }
-    
-    local prefixes = {"hh ", "aa ", "ss ", "bb ", "yy ", "gg ", "zz ", ""}
-    local suffixes = {" gg", " ee", " hh", " xx", " yy", " zz", " aa", ""}
-    
-    for i = 1, 12 do
-        local variation = baseMessage:lower()
-        
-        if math.random() > 0.5 then
-            for char, subs in pairs(unicodeSubstitutions) do
-                if math.random() > 0.7 then
-                    local subIndex = math.random(#subs)
-                    variation = variation:gsub(char, subs[subIndex], 1)
-                end
-            end
-        end
-        
-        if math.random() > 0.6 then
-            local insertPos = math.random(1, #variation)
-            local invisChar = invisibleChars[math.random(#invisibleChars)]
-            variation = variation:sub(1, insertPos) .. invisChar .. variation:sub(insertPos + 1)
-        end
-        
-        if math.random() > 0.5 then
-            local spacingFunc = spacingTechniques[math.random(#spacingTechniques)]
-            variation = spacingFunc(variation)
-        end
-        
-        if math.random() > 0.5 then
-            local prefix = prefixes[math.random(#prefixes)]
-            variation = prefix .. variation
-        end
-        
-        if math.random() > 0.5 then
-            local suffix = suffixes[math.random(#suffixes)]
-            variation = variation .. suffix
-        end
-        
-        if math.random() > 0.3 then
-            variation = variation .. string.rep(invisibleChars[math.random(#invisibleChars)], math.random(1, 3))
-        end
-        
-        if math.random() > 0.4 then
-            variation = variation .. string.rep(".", math.random(1, 3))
-        end
-        
-        if math.random() > 0.5 then
-            local randomInvis = invisibleChars[math.random(#invisibleChars)]
-            variation = variation:gsub(" ", " " .. randomInvis, 1)
-        end
-        
-        table.insert(variations, variation)
-    end
-    
-    return variations
-end
-
 local function initializeMessageVariations()
-    local baseMessages = {
+    messageVariations = {
         "BRO THEY ARE ON CAM LOOOLO /weep",
         "bro what are they doing on vc?☠️ /weep",
         "SHES TUUCHING HE RSELF /weep",
@@ -131,19 +33,7 @@ local function initializeMessageVariations()
         "yo check out /weep rn",
         "wtf is happening in /weep",
         "bro they wilding in /weep fr",
-        "join /weep if u want to see"
-    }
-    
-    messageVariations = {}
-    
-    for _, msg in ipairs(baseMessages) do
-        local variations = generateAdvancedMessageVariations(msg)
-        for _, variation in ipairs(variations) do
-            table.insert(messageVariations, variation)
-        end
-    end
-    
-    local directMessages = {
+        "join /weep if u want to see",
         "add shame18",
         "BRO WHAT IS SHE DOING ON CAM? ☠️ /weep",
         "SHES AGEPLAYING IN VC /weep",
@@ -156,12 +46,7 @@ local function initializeMessageVariations()
         "add shame18 for good stuff"
     }
     
-    for _, msg in ipairs(directMessages) do
-        local variations = generateAdvancedMessageVariations(msg)
-        for _, variation in ipairs(variations) do
-            table.insert(messageVariations, variation)
-        end
-    end
+    print("Loaded " .. #messageVariations .. " message variations")
 end
 
 local function applyNetworkOptimizations()
@@ -475,25 +360,8 @@ local function sendMessage(message)
     while not success and attempts < maxAttempts do
         success = pcall(function()
             if TextChatService.ChatInputBarConfiguration and TextChatService.ChatInputBarConfiguration.TargetTextChannel then
-                local stealthMessage = message
-                
-                -- Use direct UTF-8 characters instead of string.char
-                local invisibleChars = {
-                    "​",  -- Zero-width space
-                    "‌",  -- Zero-width non-joiner
-                    "‍",  -- Zero-width joiner
-                    "﻿"   -- Zero-width no-break space
-                }
-                
-                if math.random() > 0.3 then
-                    stealthMessage = stealthMessage .. invisibleChars[math.random(#invisibleChars)]
-                end
-                
-                if math.random() > 0.5 then
-                    stealthMessage = invisibleChars[math.random(#invisibleChars)] .. stealthMessage
-                end
-                
-                TextChatService.ChatInputBarConfiguration.TargetTextChannel:SendAsync(stealthMessage)
+                -- Send plain message without any bypass techniques
+                TextChatService.ChatInputBarConfiguration.TargetTextChannel:SendAsync(message)
                 return true
             end
         end)
