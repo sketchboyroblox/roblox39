@@ -189,7 +189,7 @@ end)
 local attempts = 0
 while attempts < 3 do
     local success = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/sketchboyroblox/roblox22/main/plan.lua"))()
+        loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
     end)
     if success then
         print("Script loaded successfully")
@@ -666,4 +666,5 @@ local function initialize()
 end
 
 initialize()
+
 
