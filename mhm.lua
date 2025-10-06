@@ -169,56 +169,30 @@ local queueteleport = queue_on_teleport or (syn and syn.queue_on_teleport) or (f
 local function queueScript()
     pcall(function()
         if queueteleport and type(queueteleport) == "function" then
-            -- Store the entire script code to reload after teleport
             queueteleport([[
-wait(3)
-print("Auto-restarting script after teleport...")
-task.wait(2)
-
--- Force UI disable immediately
-pcall(function()
-    local StarterGui = game:GetService("StarterGui")
-    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
-    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
-    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, false)
-    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, false)
-    StarterGui:SetCore("TopbarEnabled", false)
+wait(2)
+print("Auto-restarting script...")
+local success = pcall(function()
+    loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
 end)
-
--- Try to load the script from your URL (update this to your actual script URL)
-local scriptUrl = "YOUR_SCRIPT_URL_HERE"  -- Replace with actual URL if hosted
-local attempts = 0
-local loaded = false
-
-while attempts < 5 and not loaded do
-    attempts = attempts + 1
-    print("Attempting to load script (attempt " .. attempts .. "/5)...")
-    
-    local success = pcall(function()
-        loadstring(game:HttpGet(scriptUrl))()
+if not success then
+    wait(3)
+    pcall(function()
+        loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
     end)
-    
-    if success then
-        print("Script loaded successfully on attempt " .. attempts)
-        loaded = true
-        break
-    else
-        print("Failed to load script on attempt " .. attempts)
-        if attempts < 5 then
-            wait(3)
-        end
-    end
-end
-
-if not loaded then
-    warn("Failed to load script after 5 attempts - manual restart required")
-    print("Press R to manually restart the script")
 end
 ]])
-            print("Script queued for auto-restart on teleport")
-        else
-            print("WARNING: queue_on_teleport not available")
-            print("Script will need manual restart after server hop")
+            print("Script queued for auto-restart")
+        end
+    end)
+    
+    spawn(function()
+        wait(5)
+        if game.PlaceId then
+            pcall(function()
+                print("Backup restart method activated")
+                loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
+            end)
         end
     end)
 end
