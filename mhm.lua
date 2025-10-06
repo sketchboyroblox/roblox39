@@ -29,7 +29,7 @@ local function initializeMessageVariations()
         "ageplay and cnc in chat/call ;3 /mhm",
         "get active /mhm",
         "add shame18 if you want $$",
-        "hi shame18 for promo like this"
+        "hi shame18 for promo like this",
         "add shame18",
         "BRO WHAT IS SHE DOING ON CAM? ☠️ /mhm",
         "SHES AGEPLAYING IN VC /mhm",
@@ -707,3 +707,4 @@ local function initialize()
 end
 
 initialize()
+
