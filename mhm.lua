@@ -14,7 +14,7 @@ local joinedServers = {}
 local failedGames = {}
 local currentTargetPlayer = nil
 local usersProcessed = 0
-local maxMessagesPerServer = 8
+local maxUsersPerServer = 8  -- Changed from maxMessagesPerServer to maxUsersPerServer
 local followConnection = nil
 local pingOptimized = false
 local messageVariations = {}
@@ -22,23 +22,28 @@ local autoStartEnabled = true
 
 local function initializeMessageVariations()
     messageVariations = {
-        "BRO THEY ARE ON CAM LOOOLO /mhm",
-        "bro what are they doing on vc?☠️ /mhm",
-        "SHES TUUCHING HE RSELF mhm",
-        "ageplayer heaven in /mhm",
-        "ageplay and cnc in chat/call ;3 /mhm",
-        "get active /mhm",
+        "BRO THEY ARE ON CAM LOOOLO /weep",
+        "bro what are they doing on vc?☠️ /weep",
+        "SHES TUUCHING HE RSELF /weep",
+        "ageplayer heaven in /weep",
+        "ageplay and cnc in chat/call ;3 /weep",
+        "get active /weep",
         "add shame18 if you want $$",
         "hi shame18 for promo like this",
-        "join /mhm if u want to see",
+        "yo check out /weep rn",
+        "wtf is happening in /weep",
+        "bro they wilding in /weep fr",
+        "join /weep if u want to see",
         "add shame18",
-        "BRO WHAT IS SHE DOING ON CAM? ☠️ /mhm",
-        "SHES AGEPLAYING IN VC /mhm",
-        "ageplayer heaven in /mhm",
-        "cnc in vc rn /mhm",
-        "get active in /mhm",
+        "BRO WHAT IS SHE DOING ON CAM? ☠️ /weep",
+        "SHES AGEPLAYING IN VC /weep",
+        "ageplayer heaven in /weep",
+        "cnc in vc rn /weep",
+        "get active in /weep",
         "add shame18 for a present:)",
-        "shame18 for roles or promos like this"
+        "shame18 for roles or promos like this",
+        "shame18 got the best content fr",
+        "add shame18 for good stuff"
     }
     
     print("Loaded " .. #messageVariations .. " message variations")
@@ -189,7 +194,7 @@ end)
 local attempts = 0
 while attempts < 3 do
     local success = pcall(function()
-        loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/sketchboyroblox/roblox22/main/plan.lua"))()
     end)
     if success then
         print("Script loaded successfully")
@@ -355,7 +360,6 @@ local function sendMessage(message)
     while not success and attempts < maxAttempts do
         success = pcall(function()
             if TextChatService.ChatInputBarConfiguration and TextChatService.ChatInputBarConfiguration.TargetTextChannel then
-                -- Send plain message without any bypass techniques
                 TextChatService.ChatInputBarConfiguration.TargetTextChannel:SendAsync(message)
                 return true
             end
@@ -390,41 +394,84 @@ local function stopFollowing()
     end
 end
 
-local function sendEightMessages()
-    print("Sending 8 messages to chat at 1 message per second...")
+local function teleportToPlayer(targetPlayer)
+    if not targetPlayer or not targetPlayer.Character or not targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        return false
+    end
     
-    for i = 1, maxMessagesPerServer do
-        if not isRunning then break end
-        
-        local message = getRandomMessage()
-        if message then
-            local sent = false
-            local messageAttempts = 0
-            
-            -- Keep trying until message is sent or max attempts reached
-            while not sent and messageAttempts < 3 do
-                sent = sendMessage(message)
-                if sent then
-                    print("Message " .. i .. "/8 sent successfully")
-                else
-                    messageAttempts = messageAttempts + 1
-                    if messageAttempts < 3 then
-                        print("Retrying message " .. i .. "/8 (attempt " .. messageAttempts .. "/3)")
-                        wait(1)  -- Wait longer between message retries
-                    end
-                end
-            end
-            
-            if not sent then
-                print("Skipping message " .. i .. "/8 after failed attempts")
-            end
-        end
-        
-        if i < maxMessagesPerServer then
-            wait(1.2)  -- Changed from 0.5 to 1 second (1 message per second)
+    local character = player.Character
+    if not character or not character:FindFirstChild("HumanoidRootPart") then
+        return false
+    end
+    
+    pcall(function()
+        local targetPosition = targetPlayer.Character.HumanoidRootPart.Position
+        local newPosition = targetPosition + Vector3.new(math.random(-2, 2), 8, math.random(-2, 2))
+        character.HumanoidRootPart.CFrame = CFrame.new(newPosition)
+    end)
+    
+    return true
+end
+
+local function getEightPlayers()
+    local players = {}
+    for _, p in pairs(Players:GetPlayers()) do
+        if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+            table.insert(players, p)
         end
     end
     
+    local selectedPlayers = {}
+    for i = 1, math.min(maxUsersPerServer, #players) do
+        if #players > 0 then
+            local randomIndex = math.random(1, #players)
+            table.insert(selectedPlayers, players[randomIndex])
+            table.remove(players, randomIndex)
+        end
+    end
+    
+    return selectedPlayers
+end
+
+local function processEightUsers()
+    print("Finding 8 different users to message...")
+    
+    local targetPlayers = getEightPlayers()
+    if #targetPlayers == 0 then
+        print("No players found in server")
+        wait(0.5)
+        return false
+    end
+    
+    print("Found " .. #targetPlayers .. " users to message")
+    
+    for i, targetPlayer in ipairs(targetPlayers) do
+        if not isRunning then break end
+        
+        print("Processing user " .. i .. "/" .. #targetPlayers .. ": " .. targetPlayer.Name)
+        
+        if teleportToPlayer(targetPlayer) then
+            wait(0.2)
+            
+            local message = getRandomMessage()
+            if message then
+                local sent = sendMessage(message)
+                if sent then
+                    print("Message sent to " .. targetPlayer.Name)
+                else
+                    print("Failed to send message to " .. targetPlayer.Name)
+                end
+            end
+        else
+            print("Failed to teleport to " .. targetPlayer.Name)
+        end
+        
+        if i < #targetPlayers then
+            wait(1.5)  -- 1.5 seconds per message
+        end
+    end
+    
+    print("Finished messaging " .. #targetPlayers .. " users")
     return true
 end
 
@@ -587,10 +634,10 @@ local function startSpamming()
             
             print("Starting spam process...")
             
-            sendEightMessages()
+            processEightUsers()
             
             if isRunning then
-                print("8 messages sent, hopping to new server...")
+                print("Finished processing users, hopping to new server...")
                 saveScriptData()
                 wait(1)
                 teleportToNewServer()
@@ -666,5 +713,3 @@ local function initialize()
 end
 
 initialize()
-
-
