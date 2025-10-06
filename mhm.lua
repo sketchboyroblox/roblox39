@@ -46,13 +46,12 @@ local function generateAdvancedMessageVariations(baseMessage)
         ["v"] = {"ν", "ṿ"}
     }
     
+    -- Use UTF-8 escape sequences instead of string.char for high Unicode values
     local invisibleChars = {
-        string.char(8203),
-        string.char(8204),
-        string.char(8205),
-        string.char(8206),
-        string.char(8207),
-        string.char(65279)
+        "​",  -- Zero-width space
+        "‌",  -- Zero-width non-joiner
+        "‍",  -- Zero-width joiner
+        "﻿"   -- Zero-width no-break space
     }
     
     local spacingTechniques = {
@@ -121,14 +120,18 @@ end
 
 local function initializeMessageVariations()
     local baseMessages = {
-        "BRO THEY ARE ON CAM LOOOLO /mhm",
-        "bro what are they doing on vc?☠️ /mhm",
-        "SHES TUUCHING HE RSELF /mhm",
-        "ageplayer heaven in /mhm",
-        "ageplay and cnc in chat/call ;3 /mhm",
-        "get active /mhm",
+        "BRO THEY ARE ON CAM LOOOLO /weep",
+        "bro what are they doing on vc?☠️ /weep",
+        "SHES TUUCHING HE RSELF /weep",
+        "ageplayer heaven in /weep",
+        "ageplay and cnc in chat/call ;3 /weep",
+        "get active /weep",
         "add shame18 if you want $$",
-        "hi shame18 for promo like this"
+        "hi shame18 for promo like this",
+        "yo check out /weep rn",
+        "wtf is happening in /weep",
+        "bro they wilding in /weep fr",
+        "join /weep if u want to see"
     }
     
     messageVariations = {}
@@ -142,13 +145,15 @@ local function initializeMessageVariations()
     
     local directMessages = {
         "add shame18",
-        "BRO WHAT IS SHE DOING ON CAM? ☠️ /mhm",
-        "SHES AGEPLAYING IN VC /mhm",
-        "ageplayer heaven in /mhm",
-        "cnc in vc rn /mhm",
-        "get active in /mhm",
+        "BRO WHAT IS SHE DOING ON CAM? ☠️ /weep",
+        "SHES AGEPLAYING IN VC /weep",
+        "ageplayer heaven in /weep",
+        "cnc in vc rn /weep",
+        "get active in /weep",
         "add shame18 for a present:)",
-        "shame18 for roles or promos like this"
+        "shame18 for roles or promos like this",
+        "shame18 got the best content fr",
+        "add shame18 for good stuff"
     }
     
     for _, msg in ipairs(directMessages) do
@@ -465,17 +470,19 @@ end
 local function sendMessage(message)
     local success = false
     local attempts = 0
+    local maxAttempts = 10
     
-    while not success and attempts < 5 do
+    while not success and attempts < maxAttempts do
         success = pcall(function()
             if TextChatService.ChatInputBarConfiguration and TextChatService.ChatInputBarConfiguration.TargetTextChannel then
                 local stealthMessage = message
                 
+                -- Use direct UTF-8 characters instead of string.char
                 local invisibleChars = {
-                    string.char(8203),
-                    string.char(8204),
-                    string.char(8205),
-                    string.char(65279)
+                    "​",  -- Zero-width space
+                    "‌",  -- Zero-width non-joiner
+                    "‍",  -- Zero-width joiner
+                    "﻿"   -- Zero-width no-break space
                 }
                 
                 if math.random() > 0.3 then
@@ -493,7 +500,12 @@ local function sendMessage(message)
         
         if not success then
             attempts = attempts + 1
-            wait(0.15)
+            if attempts < maxAttempts then
+                print("Message send failed (attempt " .. attempts .. "/" .. maxAttempts .. "), retrying...")
+                wait(math.random(0.3, 0.6))
+            else
+                print("Failed to send message after " .. maxAttempts .. " attempts")
+            end
         end
     end
     
@@ -516,23 +528,37 @@ local function stopFollowing()
 end
 
 local function sendEightMessages()
-    print("Sending 8 messages to chat at 2 messages per second...")
+    print("Sending 8 messages to chat at 1 message per second...")
     
     for i = 1, maxMessagesPerServer do
         if not isRunning then break end
         
         local message = getRandomMessage()
         if message then
-            local sent = sendMessage(message)
-            if sent then
-                print("Message " .. i .. "/8 sent")
-            else
-                print("Failed to send message " .. i .. "/8")
+            local sent = false
+            local messageAttempts = 0
+            
+            -- Keep trying until message is sent or max attempts reached
+            while not sent and messageAttempts < 3 do
+                sent = sendMessage(message)
+                if sent then
+                    print("Message " .. i .. "/8 sent successfully")
+                else
+                    messageAttempts = messageAttempts + 1
+                    if messageAttempts < 3 then
+                        print("Retrying message " .. i .. "/8 (attempt " .. messageAttempts .. "/3)")
+                        wait(1)  -- Wait longer between message retries
+                    end
+                end
+            end
+            
+            if not sent then
+                print("Skipping message " .. i .. "/8 after failed attempts")
             end
         end
         
         if i < maxMessagesPerServer then
-            wait(0.5)
+            wait(1.2)  -- Changed from 0.5 to 1 second (1 message per second)
         end
     end
     
@@ -744,15 +770,22 @@ local function initialize()
         StarterGui:SetCore("TopbarEnabled", false)
     end)
     
-    pcall(function()
+    local success, errorMsg = pcall(function()
+        print("Initializing message variations...")
         initializeMessageVariations()
+        print("Message variations initialized: " .. #messageVariations .. " total")
         
+        print("Loading script data...")
         local shouldAutoStart = loadScriptData()
+        print("Script data loaded, auto-start: " .. tostring(shouldAutoStart))
         
+        print("Setting up key bindings...")
         UserInputService.InputBegan:Connect(onKeyPress)
+        print("Key bindings ready (Q to stop, R to restart)")
         
         if game.JobId and game.JobId ~= "" then
             joinedServers[game.JobId] = tick()
+            print("Current server ID registered: " .. game.JobId)
         end
         
         print("AUTO-STARTING SPAM PROCESS...")
@@ -762,6 +795,11 @@ local function initialize()
         wait(1)
         startSpamming()
     end)
+    
+    if not success then
+        warn("INITIALIZATION FAILED: " .. tostring(errorMsg))
+        print("Error details: " .. tostring(errorMsg))
+    end
 end
 
 initialize()
