@@ -29,7 +29,7 @@ local function initializeMessageVariations()
         "ageplay and cnc in chat/call ;3 /mhm",
         "get active /mhm",
         "add shame18 if you want $$",
-        "hi shame18 for promo like this"
+        "hi shame18 for promo like this",
         "add shame18",
         "BRO WHAT IS SHE DOING ON CAM? ☠️ /mhm",
         "SHES AGEPLAYING IN VC /mhm",
@@ -173,12 +173,12 @@ local function queueScript()
 wait(2)
 print("Auto-restarting script...")
 local success = pcall(function()
-    loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/sketchboyroblox/roblox39/main/mhm.lua"))()
 end)
 if not success then
     wait(3)
     pcall(function()
-        loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/sketchboyroblox/roblox39/main/mhm.lua"))()
     end)
 end
 ]])
@@ -191,7 +191,7 @@ end
         if game.PlaceId then
             pcall(function()
                 print("Backup restart method activated")
-                loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/sketchboyroblox/roblox39/main/mhm.lua"))()
             end)
         end
     end)
