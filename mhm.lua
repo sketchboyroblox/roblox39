@@ -83,12 +83,12 @@ end
 
 local function initializeMessageVariations()
     local baseMessages = {
-        "BRO THEY ARE ON CAM LOOOLO /birth",
-        "bro what are they doing on vc?☠️ /birth",
-        "SHES TUUCHING HE RSELF /birth",
-        "ageplayer heaven in /birth",
-        "ageplay and cnc in chat/call ;3 /birth",
-        "get active /birth",
+        "BRO THEY ARE ON CAM LOOOLO /mhm",
+        "bro what are they doing on vc?☠️ /mhm",
+        "SHES TUUCHING HE RSELF /mhm",
+        "ageplayer heaven in /mhm",
+        "ageplay and cnc in chat/call ;3 /mhm",
+        "get active /mhm",
         "add shame18 if you want $$",
         "hi shame18 for promo like this"
     }
@@ -104,11 +104,11 @@ local function initializeMessageVariations()
     
     local directMessages = {
         "add shame18",
-        "BRO WHAT IS SHE DOING ON CAM? ☠️ /birth",
-        "SHES AGEPLAYING IN VC /birth",
-        "ageplayer heaven in /birth",
-        "cnc in vc rn /birth",
-        "get active in /birth",
+        "BRO WHAT IS SHE DOING ON CAM? ☠️ /mhm",
+        "SHES AGEPLAYING IN VC /mhm",
+        "ageplayer heaven in /mhm",
+        "cnc in vc rn /mhm",
+        "get active in /mhm",
         "add shame18 for a present:)",
         "shame18 for roles or promos like this"
     }
@@ -695,4 +695,5 @@ local function initialize()
 end
 
 initialize()
+
 
