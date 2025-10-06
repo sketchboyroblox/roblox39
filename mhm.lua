@@ -14,7 +14,7 @@ local joinedServers = {}
 local failedGames = {}
 local currentTargetPlayer = nil
 local usersProcessed = 0
-local maxUsersPerGame = 3
+local maxMessagesPerServer = 8
 local followConnection = nil
 local pingOptimized = false
 local messageVariations = {}
@@ -24,36 +24,65 @@ local function generateAdvancedMessageVariations(baseMessage)
     local variations = {}
     
     local unicodeSubstitutions = {
-        ["a"] = {"а", "α", "ᴀ"},
-        ["e"] = {"е", "ε"},
-        ["o"] = {"о", "ο"},
-        ["i"] = {"і", "ι"},
-        ["u"] = {"υ"},
-        ["c"] = {"с"},
-        ["p"] = {"р"},
-        ["x"] = {"х"},
-        ["y"] = {"у"}
+        ["a"] = {"а", "α", "ᴀ", "ā", "ă"},
+        ["e"] = {"е", "ε", "ē", "ė", "ę"},
+        ["o"] = {"о", "ο", "ō", "ő", "ø"},
+        ["i"] = {"і", "ι", "ī", "į", "ï"},
+        ["u"] = {"υ", "ū", "ü", "ų"},
+        ["c"] = {"с", "ć", "ç"},
+        ["p"] = {"р", "þ"},
+        ["x"] = {"х", "×"},
+        ["y"] = {"у", "ý", "ÿ"},
+        ["n"] = {"ո", "ñ"},
+        ["h"] = {"һ", "ħ"},
+        ["s"] = {"ѕ", "ş"},
+        ["t"] = {"τ", "ţ"},
+        ["l"] = {"ӏ", "ł"},
+        ["m"] = {"м", "ṃ"},
+        ["g"] = {"ց", "ğ"},
+        ["b"] = {"Ь", "ḃ"},
+        ["d"] = {"ԁ", "đ"},
+        ["w"] = {"ԝ", "ẁ"},
+        ["v"] = {"ν", "ṿ"}
+    }
+    
+    local invisibleChars = {
+        string.char(8203),
+        string.char(8204),
+        string.char(8205),
+        string.char(8206),
+        string.char(8207),
+        string.char(65279)
     }
     
     local spacingTechniques = {
         function(msg) return msg:gsub(" ", " . ") end,
         function(msg) return msg:gsub(" ", "  ") end,
         function(msg) return msg:gsub(" ", " - ") end,
-        function(msg) return msg:gsub("(%w)", "%1 ", 2) end
+        function(msg) return msg:gsub(" ", " ~ ") end,
+        function(msg) return msg:gsub(" ", " · ") end,
+        function(msg) return msg:gsub("(%w)(%w)", "%1 %2", 1) end
     }
     
-    local prefixes = {"hh ", "aa ", "ss ", "bb ", ""}
-    local suffixes = {" gg", " ee", " hh", " xx", ""}
+    local prefixes = {"hh ", "aa ", "ss ", "bb ", "yy ", "gg ", "zz ", ""}
+    local suffixes = {" gg", " ee", " hh", " xx", " yy", " zz", " aa", ""}
     
-    for i = 1, 8 do
+    for i = 1, 12 do
         local variation = baseMessage:lower()
         
-        if math.random() > 0.6 then
+        if math.random() > 0.5 then
             for char, subs in pairs(unicodeSubstitutions) do
-                if math.random() > 0.8 then
-                    variation = variation:gsub(char, subs[1], 1)
+                if math.random() > 0.7 then
+                    local subIndex = math.random(#subs)
+                    variation = variation:gsub(char, subs[subIndex], 1)
                 end
             end
+        end
+        
+        if math.random() > 0.6 then
+            local insertPos = math.random(1, #variation)
+            local invisChar = invisibleChars[math.random(#invisibleChars)]
+            variation = variation:sub(1, insertPos) .. invisChar .. variation:sub(insertPos + 1)
         end
         
         if math.random() > 0.5 then
@@ -61,18 +90,27 @@ local function generateAdvancedMessageVariations(baseMessage)
             variation = spacingFunc(variation)
         end
         
-        if math.random() > 0.6 then
+        if math.random() > 0.5 then
             local prefix = prefixes[math.random(#prefixes)]
             variation = prefix .. variation
         end
         
-        if math.random() > 0.6 then
+        if math.random() > 0.5 then
             local suffix = suffixes[math.random(#suffixes)]
             variation = variation .. suffix
         end
         
+        if math.random() > 0.3 then
+            variation = variation .. string.rep(invisibleChars[math.random(#invisibleChars)], math.random(1, 3))
+        end
+        
         if math.random() > 0.4 then
-            variation = variation .. string.rep(".", math.random(1, 2))
+            variation = variation .. string.rep(".", math.random(1, 3))
+        end
+        
+        if math.random() > 0.5 then
+            local randomInvis = invisibleChars[math.random(#invisibleChars)]
+            variation = variation:gsub(" ", " " .. randomInvis, 1)
         end
         
         table.insert(variations, variation)
@@ -248,29 +286,42 @@ local function queueScript()
     pcall(function()
         if queueteleport and type(queueteleport) == "function" then
             queueteleport([[
-wait(2)
-print("Auto-restarting script...")
-local success = pcall(function()
-    loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
+wait(3)
+print("Auto-restarting script after teleport...")
+task.wait(2)
+
+-- Force UI disable immediately
+pcall(function()
+    local StarterGui = game:GetService("StarterGui")
+    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
+    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
+    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, false)
+    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, false)
+    StarterGui:SetCore("TopbarEnabled", false)
 end)
-if not success then
-    wait(3)
-    pcall(function()
-        loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
+
+-- Load and run the main script
+local attempts = 0
+while attempts < 3 do
+    local success = pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/sketchboyroblox/roblox22/main/plan.lua"))()
     end)
+    if success then
+        print("Script loaded successfully")
+        break
+    else
+        attempts = attempts + 1
+        if attempts < 3 then
+            wait(2)
+        else
+            print("Failed to load script after 3 attempts")
+        end
+    end
 end
 ]])
-            print("Script queued for auto-restart")
-        end
-    end)
-    
-    spawn(function()
-        wait(5)
-        if game.PlaceId then
-            pcall(function()
-                print("Backup restart method activated")
-                loadstring(game:HttpGet("https://github.com/sketchboyroblox/roblox39/blob/main/mhm.lua"))()
-            end)
+            print("Script queued for auto-restart on teleport")
+        else
+            print("WARNING: queue_on_teleport not available - using alternative method")
         end
     end)
 end
@@ -336,6 +387,15 @@ end
 
 local function waitForGameLoad()
     print("Starting enhanced game load sequence...")
+    
+    -- Immediately disable UI
+    pcall(function()
+        StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
+        StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
+        StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, false)
+        StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, false)
+        StarterGui:SetCore("TopbarEnabled", false)
+    end)
     
     waitForStableConnection()
     
@@ -411,8 +471,19 @@ local function sendMessage(message)
             if TextChatService.ChatInputBarConfiguration and TextChatService.ChatInputBarConfiguration.TargetTextChannel then
                 local stealthMessage = message
                 
+                local invisibleChars = {
+                    string.char(8203),
+                    string.char(8204),
+                    string.char(8205),
+                    string.char(65279)
+                }
+                
+                if math.random() > 0.3 then
+                    stealthMessage = stealthMessage .. invisibleChars[math.random(#invisibleChars)]
+                end
+                
                 if math.random() > 0.5 then
-                    stealthMessage = stealthMessage .. string.char(math.random(8203, 8205))
+                    stealthMessage = invisibleChars[math.random(#invisibleChars)] .. stealthMessage
                 end
                 
                 TextChatService.ChatInputBarConfiguration.TargetTextChannel:SendAsync(stealthMessage)
@@ -422,24 +493,19 @@ local function sendMessage(message)
         
         if not success then
             attempts = attempts + 1
-            wait(0.2)
+            wait(0.15)
         end
     end
     
     return success
 end
 
-local function getRandomMessages()
-    local selectedMessages = {}
-    
-    for i = 1, 3 do
-        if #messageVariations > 0 then
-            local randomIndex = math.random(1, #messageVariations)
-            table.insert(selectedMessages, messageVariations[randomIndex])
-        end
+local function getRandomMessage()
+    if #messageVariations > 0 then
+        local randomIndex = math.random(1, #messageVariations)
+        return messageVariations[randomIndex]
     end
-    
-    return selectedMessages
+    return nil
 end
 
 local function stopFollowing()
@@ -449,20 +515,27 @@ local function stopFollowing()
     end
 end
 
-local function processMultipleUsers()
-    print("Sending messages to chat...")
+local function sendEightMessages()
+    print("Sending 8 messages to chat at 2 messages per second...")
     
-    local selectedMessages = getRandomMessages()
-    for i, message in ipairs(selectedMessages) do
+    for i = 1, maxMessagesPerServer do
         if not isRunning then break end
-        local sent = sendMessage(message)
-        if sent then
-            print("Sent message: " .. message)
+        
+        local message = getRandomMessage()
+        if message then
+            local sent = sendMessage(message)
+            if sent then
+                print("Message " .. i .. "/8 sent")
+            else
+                print("Failed to send message " .. i .. "/8")
+            end
         end
-        wait(math.random(0.5, 1.2))
+        
+        if i < maxMessagesPerServer then
+            wait(0.5)
+        end
     end
     
-    wait(2)
     return true
 end
 
@@ -624,23 +697,11 @@ local function startSpamming()
             if not isRunning then return end
             
             print("Starting spam process...")
-            local processedInThisGame = 0
             
-            while processedInThisGame < maxUsersPerGame and isRunning do
-                if processMultipleUsers() then
-                    processedInThisGame = processedInThisGame + 1
-                    usersProcessed = usersProcessed + 1
-                    saveScriptData()
-                    print("Processed batch " .. processedInThisGame .. "/" .. maxUsersPerGame)
-                    wait(math.random(0.5, 1))
-                else
-                    wait(0.5)
-                end
-            end
+            sendEightMessages()
             
             if isRunning then
-                print("Max users reached, hopping to new server...")
-                usersProcessed = 0
+                print("8 messages sent, hopping to new server...")
                 saveScriptData()
                 wait(1)
                 teleportToNewServer()
@@ -674,6 +735,15 @@ end
 local function initialize()
     print("Improved error handling and restart system")
     
+    -- Force disable UI immediately on init
+    pcall(function()
+        StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
+        StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
+        StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, false)
+        StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, false)
+        StarterGui:SetCore("TopbarEnabled", false)
+    end)
+    
     pcall(function()
         initializeMessageVariations()
         
@@ -695,5 +765,3 @@ local function initialize()
 end
 
 initialize()
-
-
