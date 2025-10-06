@@ -22,28 +22,22 @@ local autoStartEnabled = true
 
 local function initializeMessageVariations()
     messageVariations = {
-        "BRO THEY ARE ON CAM LOOOLO /weep",
-        "bro what are they doing on vc?☠️ /weep",
-        "SHES TUUCHING HE RSELF /weep",
-        "ageplayer heaven in /weep",
-        "ageplay and cnc in chat/call ;3 /weep",
-        "get active /weep",
+        "BRO THEY ARE ON CAM LOOOLO /mhm",
+        "bro what are they doing on vc?☠️ /mhm",
+        "SHES TUUCHING HE RSELF /mhm",
+        "ageplayer heaven in /mhm",
+        "ageplay and cnc in chat/call ;3 /mhm",
+        "get active /mhm",
         "add shame18 if you want $$",
-        "hi shame18 for promo like this",
-        "yo check out /weep rn",
-        "wtf is happening in /weep",
-        "bro they wilding in /weep fr",
-        "join /weep if u want to see",
+        "hi shame18 for promo like this"
         "add shame18",
-        "BRO WHAT IS SHE DOING ON CAM? ☠️ /weep",
-        "SHES AGEPLAYING IN VC /weep",
-        "ageplayer heaven in /weep",
-        "cnc in vc rn /weep",
-        "get active in /weep",
+        "BRO WHAT IS SHE DOING ON CAM? ☠️ /mhm",
+        "SHES AGEPLAYING IN VC /mhm",
+        "ageplayer heaven in /mhm",
+        "cnc in vc rn /mhm",
+        "get active in /mhm",
         "add shame18 for a present:)",
-        "shame18 for roles or promos like this",
-        "shame18 got the best content fr",
-        "add shame18 for good stuff"
+        "shame18 for roles or promos like this"
     }
     
     print("Loaded " .. #messageVariations .. " message variations")
@@ -713,3 +707,4 @@ local function initialize()
 end
 
 initialize()
+
