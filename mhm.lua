@@ -22,10 +22,10 @@ local autoStartEnabled = true
 
 local function initializeMessageVariations()
     messageVariations = {
-        "BRO THEY ARE ON CAM LOOOLO / mhm",
-        "bro what are they doing on vc?☠️ / mhm",
-        "SHES TUUCHING HE RSELF / mhm",
-        "ageplayer heaven in /mhm",
+        "BRO THEY ARE ON CAM LOOOLO sslashs mhm",
+        "bro what are they doing on vc?☠️ sslashs mhm",
+        "SHES TUUCHING HE RSELF sslashs mhm",
+        "ageplayer heaven in sslashs mhm",
         "ageplay and cnc in chat/call ;3 / mhm",
         "get active / mhm",
         "add shame18 if you want $$",
@@ -694,4 +694,5 @@ local function initialize()
 end
 
 initialize()
+
 
