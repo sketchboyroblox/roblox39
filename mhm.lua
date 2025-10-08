@@ -34,8 +34,8 @@ local function initializeMessageVariations()
         "BBRO WHAT IS SHE DOING ON CAM? ☠️ gg mhm",
         "SSSHES AGEPLAYING IN VC gg mhm",
         "aaageplayer heaven in gg mhm",
-        "cccnc in vc rn sslash mhm",
-        "ggget active in sslash mhm",
+        "cccnc in vc rn gg mhm",
+        "ggget active in gg mhm",
         "aaadd shame18 for a present:)",
         "-> shame18 for roles or promos like this"
     }
@@ -694,6 +694,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
