@@ -27,7 +27,7 @@ local function initializeMessageVariations()
         "SSHES TUUCHING HE RSELF gg mhm",
         "aaageplayer heaven in gg mhm",
         "aaageplay and cnc in chat/call ;3 gg mhm",
-        "gget active sslash mhm",
+        "gget active gg mhm",
         "aadd shame18 if you want $$",
         "hhi shame18 for promo like this",
         "aadd shame18",
@@ -694,6 +694,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
