@@ -14,7 +14,7 @@ local joinedServers = {}
 local failedGames = {}
 local currentTargetPlayer = nil
 local usersProcessed = 0
-local maxUsersPerServer = 8  -- Changed from maxMessagesPerServer to maxUsersPerServer
+local maxUsersPerServer = 8
 local followConnection = nil
 local pingOptimized = false
 local messageVariations = {}
@@ -694,6 +694,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
