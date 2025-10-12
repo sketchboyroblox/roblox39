@@ -23,14 +23,17 @@ local autoStartEnabled = true
 local function initializeMessageVariations()
     messageVariations = {
         ".slashmhm SHES SOO WETT ON STAGE LOOOOL",
-        "cnc and aggeplay in vc .slashmhm",
-        "LOLZ YOU SKIDDED MY CODE LOOOOL .slashmhm",
+        "cnc and aggeplay in vc gg.mhm",
+        "LOLZ YOU SKIDDED MY CODE LOOOOL gg.mhm",
         "addshame18 4 promo like this",
         "addshame18 he has a present for you :D",
         "add shame18 if you have a pinkcat",
-        "get active .slashmhm",
-        "#1 com .slashmhm",
-        "LOOOOOOOOOOOOOOOOOOOOOOOOL HER PINKCAT IS OUT .slashmhm"
+        "get active gg.mhm",
+        "#1 com gg.mhm",
+        "LOOOOOOOOOOOOOOOOOOOOOOOOL HER PINKCAT IS OUT gg.mhm",
+        "KIIAKII YOU WILL NEVER OWN DHRP LOOOOL",
+        "KIIAKKI YOUR A LARP gg.mhm",
+        "KIIAKKI SOCIAL WILL FOREVER RUN DHRP"
     }
     
     print("Loaded " .. #messageVariations .. " message variations")
@@ -687,6 +690,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
