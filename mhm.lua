@@ -30,7 +30,7 @@ local function initializeMessageVariations()
         "add shame18 if you have a pinkcat",
         "get active ./mhm",
         "#1 com ./mhm",
-        "eww lolz your some skids ./mhm"
+        "LOOOOOOOOOOOOOOOOOOOOOOOOL HER PINKCAT IS OUT ./mhm"
     }
     
     print("Loaded " .. #messageVariations .. " message variations")
@@ -687,6 +687,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
