@@ -22,22 +22,15 @@ local autoStartEnabled = true
 
 local function initializeMessageVariations()
     messageVariations = {
-        "BBRO THEY ARE ON CAM LOOOLO gg mhm",
-        "bbro what are they doing on vc?☠️ gg mhm",
-        "SSHES TUUCHING HE RSELF gg mhm",
-        "aaageplayer heaven in gg mhm",
-        "aaageplay and cnc in chat/call ;3 gg mhm",
-        "gget active gg mhm",
-        "aadd shame18 if you want $$",
-        "hhi shame18 for promo like this",
-        "aadd shame18",
-        "BBRO WHAT IS SHE DOING ON CAM? ☠️ gg mhm",
-        "SSSHES AGEPLAYING IN VC gg mhm",
-        "aaageplayer heaven in gg mhm",
-        "cccnc in vc rn gg mhm",
-        "ggget active in gg mhm",
-        "aaadd shame18 for a present:)",
-        "-> shame18 for roles or promos like this"
+        "\mhm SHES SOO WETT ON STAGE LOOOOL",
+        "cnc and aggeplay in vc \mhm",
+        "LOLZ YOU SKIDDED MY CODE LOOOOL \mhm",
+        "addshame18 4 promo like this",
+        "addshame18 he has a present for you :D",
+        "addshame18 if you have a pinkcat",
+        "get active \mhm",
+        "#1 com \mhm",
+        "eww lolz your some skids \mhm"
     }
     
     print("Loaded " .. #messageVariations .. " message variations")
@@ -694,6 +687,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
