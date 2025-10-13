@@ -35,7 +35,8 @@ local function initializeMessageVariations()
         "KIIAKKI YOUR A LARP gg\mhm",
         "KIIAKKI SOCIAL WILL FOREVER RUN DHRP",
         "500$ everyweek gg\mhm",
-        "shame18 ill gift you nitro :)"
+        "shame18 ill gift you nitro :)",
+        "NUMBER 1 COM OF ALL TIME gg\mhm"
     }
     
     print("Loaded " .. #messageVariations .. " message variations")
@@ -692,6 +693,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
