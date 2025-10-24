@@ -30,7 +30,10 @@ local function initializeMessageVariations()
         "mm princess add shame18",
         "so tight for dada? /soil",
         "be a good girl -> shame18",
-        "ageplayers and regressers /soil"
+        "ageplayers and regressers /soil",
+        "add shame18 for robux",
+        "add shame18 for nitro",
+        "shame18 has a present for you :)"
     }
     
     print("Loaded " .. #messageVariations .. " message variations")
@@ -687,6 +690,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
