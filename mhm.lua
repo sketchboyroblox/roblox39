@@ -22,15 +22,15 @@ local autoStartEnabled = true
 
 local function initializeMessageVariations()
     messageVariations = {
-        "cnc and ageplay in vc >.< /soil",
-        "HER LITTLE PARTS ARE OUT /soil",
-        "ageplayer heaven /soil",
-        "we dont ragebait 😂 /soil",
-        "find your little girl /soil",
+        "cnc and ageplay in vc >.< /label",
+        "HER LITTLE PARTS ARE OUT /label",
+        "ageplayer heaven /label",
+        "we dont ragebait 😂 /label",
+        "find your little girl /label",
         "mm princess add shame18",
-        "so tight for dada? /soil",
+        "so tight for dada? /label",
         "be a good girl -> shame18",
-        "ageplayers and regressers /soil",
+        "ageplayers and regressers /label",
         "add shame18 for robux",
         "add shame18 for nitro",
         "shame18 has a present for you :)"
@@ -690,6 +690,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
