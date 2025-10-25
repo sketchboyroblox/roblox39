@@ -33,7 +33,11 @@ local function initializeMessageVariations()
         "ageplayers and regressers /label",
         "add shame18 for robux",
         "add shame18 for nitro",
-        "shame18 has a present for you :)"
+        "shame18 has a present for you :)",
+        "add overtime55 for nitro :p",
+        "blegh overtime55 if tight pinkcat",
+        "dm overtime55 forrr free robyx >.<",
+        "aghhh your soo tight - overtime55"
     }
     
     print("Loaded " .. #messageVariations .. " message variations")
@@ -690,6 +694,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
