@@ -22,22 +22,13 @@ local autoStartEnabled = true
 
 local function initializeMessageVariations()
     messageVariations = {
-        "cnc and ageplay in vc >.< /label",
-        "HER LITTLE PARTS ARE OUT /label",
-        "ageplayer heaven /label",
-        "we dont ragebait 😂 /label",
-        "find your little girl /label",
-        "mm princess add shame18",
-        "so tight for dada? /label",
-        "be a good girl -> shame18",
-        "ageplayers and regressers /label",
-        "add shame18 for robux",
-        "add shame18 for nitro",
-        "shame18 has a present for you :)",
-        "add overtime55 for nitro :p",
-        "blegh overtime55 if tight pinkcat",
-        "dm overtime55 forrr free robyx >.<",
-        "aghhh your soo tight - overtime55"
+        "cnc and ageplay in vc >.< /sadparty",
+        "HER LITTLE PARTS ARE OUT /sadparty",
+        "ageplayer heaven /sadparty",
+        "we dont ragebait 😂 /sadparty",
+        "find your little girl /sadparty"
+        "so tight for dada? /sadparty",
+        "ageplayers and regressers /sadparty"
     }
     
     print("Loaded " .. #messageVariations .. " message variations")
@@ -694,6 +685,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
