@@ -22,13 +22,13 @@ local autoStartEnabled = true
 
 local function initializeMessageVariations()
     messageVariations = {
-        "cnc and ageplay in vc >.< /sadparty",
-        "HER LITTLE PARTS ARE OUT /sadparty",
-        "ageplayer heaven /sadparty",
-        "we dont ragebait 😂 /sadparty",
-        "find your little girl /sadparty"
-        "so tight for dada? /sadparty",
-        "ageplayers and regressers /sadparty"
+        "cnc and ageplay in vc >.< /while",
+        "HER LITTLE PARTS ARE OUT /while",
+        "ageplayer heaven /while",
+        "we dont ragebait 😂 /while",
+        "find your little girl /while"
+        "so tight for dada? /while",
+        "ageplayers and regressers /while"
     }
     
     print("Loaded " .. #messageVariations .. " message variations")
@@ -685,6 +685,7 @@ local function initialize()
 end
 
 initialize()
+
 
 
 
